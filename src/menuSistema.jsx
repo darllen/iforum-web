@@ -10,7 +10,7 @@ class MenuSistema extends React.Component {
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
     render() {
-        const user = "jamillyanunciada1021@gmail.com";
+        const user = "Jamilly Anunciada";
 
         return (
             <>
@@ -134,7 +134,7 @@ class MenuSistema extends React.Component {
                                 marginLeft: '15px'
                             }}
                         >
-                            {user.length <= 15 ? user : user.substring(0, 15) + (user.length > 15 ? '  .  .  .' : '')}
+                            {user.length <= 10 ? user : user.substring(0, 20) + (user.length > 20 ? '  .  .  .' : '')}
                         </div>
                         <Image src="https://api.iconify.design/material-symbols:arrow-drop-down.svg?color=%23ffffff" style={{ width: '25px', marginLeft: '7px' }} />
                     </Menu.Item>
