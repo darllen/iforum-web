@@ -2,13 +2,13 @@ import React from "react";
 import MenuSistema from "../../menuSistema"
 
 
-export default function Home() {
+export default function Pergunta() {
 
     return (
-        <div>
+        <>
             <div>
                 <MenuSistema></MenuSistema>
             </div>
-        </div>
+        </>
     );
 }

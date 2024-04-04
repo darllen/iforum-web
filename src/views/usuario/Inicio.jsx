@@ -5,7 +5,7 @@ import { Link/* , useLocation */ } from "react-router-dom";
 
 export default function Inicio() {
     return (
-        <div>
+        <>
             <div>
                 {/* left bar */}
                 <div>
@@ -41,6 +41,6 @@ export default function Inicio() {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
