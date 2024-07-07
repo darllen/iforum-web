@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Container, Grid, Form, Button, Icon } from 'semantic-ui-react';
+import { Link } from "react-router-dom";
 import MenuSistema from "../component/menuSistema";
-import Periodo from "../component/periodo";
 import Disciplina from "../component/disciplina";
-import { Container, Grid, Form } from 'semantic-ui-react';
+import Pergunta from "../component/pergunta";
+import Periodo from "../component/periodo";
 
 const periodos = [
     { id: 1, periodo: '1º P' },
@@ -20,13 +22,21 @@ const disciplinas = [
     { id: 5, disciplina: 'Ética e Cidadania' },
     { id: 4, disciplina: 'Matemática Discreta' },
     { id: 5, disciplina: 'Sistemas Operacionais' }
-]
+];
+
+const perguntas = [
+    { id: 1, usuario: 'Jamilly Anunciada' ,curtidas: 13, data: 'fev/2024', disciplina: 'Fundamentos de Informática ', titulo: 'Instalar uma distribuição Linux em diferentes ambientes (desktop, servidor, máquina virtual)' },
+    { id: 2, usuario: 'Jamilly Anunciada' ,curtidas: 14, data: 'abr/2024', disciplina: 'Fundamentos de Informática ', titulo: 'Instalar uma distribuição Linux em diferentes ambientes (desktop, servidor, máquina virtual)' },
+    { id: 3, usuario: 'Jamilly Anunciada' ,curtidas: 12, data: 'out/2024', disciplina: 'Fundamentos de Informática ', titulo: 'Instalar uma distribuição Linux em diferentes ambientes (desktop, servidor, máquina virtual)' },
+    { id: 4, usuario: 'Jamilly Anunciada' ,curtidas: 5, data: 'fev/2024', disciplina: 'Fundamentos de Informática ', titulo: 'Instalar uma distribuição Linux em diferentes ambientes (desktop, servidor, máquina virtual)' },
+    { id: 5, usuario: 'Jamilly Anunciada' ,curtidas: 45, data: 'mar/2024', disciplina: 'Fundamentos de Informática ', titulo: 'Instalar uma distribuição Linux em diferentes ambientes (desktop, servidor, máquina virtual)' },
+];
 
 export default function Home() {
 
     const [selectedCurso, setSelectedCurso] = useState(null);
     const [selectedDisciplina, setSelectedDisciplina] = useState(null);
-
+    const [hover, setHover] = useState(false);
 
     const handleCardClickCourse = (entity) => {
         setSelectedCurso(entity);
@@ -37,6 +47,7 @@ export default function Home() {
         setSelectedDisciplina(entity);
         console.log(`Pesquisa por: ${entity.periodo}`);
     };
+
 
     return (
         <div style={{ backgroundColor: 'var(--background-page)' }}>
@@ -49,7 +60,6 @@ export default function Home() {
                             <Grid.Column width={4} style={{ padding: 0 }}>
                                 <Form>
                                     <div className="pesquisa-curso" style={{ backgroundColor: 'white', borderRadius: 10, alignItems: 'center' }}>
-                                        {/*<div style={{ marginBottom: '10px', fontWeight: '600', fontFamily: 'Poppins' }}>Buscar curso</div>*/}
                                         <div style={{ display: 'flex' }}>
                                             <select className="pesquisa-curso" style={{ cursor: 'pointer' }}>
                                                 <option value="aloo" style={{ fontFamily: 'Poppins', fontWeight: '550' }}>
@@ -85,9 +95,22 @@ export default function Home() {
                                     </div>
                                 </Form>
                             </Grid.Column>
-                            <Grid.Column width={12} style={{   }}>
-
-                               
+                            <Grid.Column width={12} style={{ }}>
+                                <div className="light-shadow" style={{ backgroundColor: 'white', borderRadius: 10, alignItems: 'center', height:'100%', padding: '50px 70px 10px 70px', marginLeft:10 }}>
+                                    <div className="head" style={{ display: 'flex', justifyContent: 'space-between', marginBottom:10 }}>
+                                        <div className="title-page" style={{ fontFamily:'PoetsenOne', fontSize: '2.5em' }}>Qual a sua dúvida?</div>
+                                        <Button type="button" circular icon labelPosition='left' onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ backgroundColor: 'var(--azul-normal)', transform: hover ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.3s ease, background-color 0.3s ease' }}>
+                                            <Icon name='plus' style={{ color: 'var(--azul-branquelo)', backgroundColor: 'var(--azul-normal)' }}/>
+                                            <Link to={'/home'} style={{ color: 'var(--azul-branquelo)', fontWeight:500, fontFamily: 'Poppins' }}>Perguntar</Link>
+                                        </Button>
+                                    </div>
+                                    {/*LISTAGEM DE PERGUNTAS*/}
+                                    <div style={{ marginTop: 40 }}>
+                                    { perguntas.map((p) => (
+                                            <Pergunta key={p.id} usuario={p.usuario} disciplina={p.disciplina} curtidas={p.curtidas} data={p.data} titulo={p.titulo}/>
+                                        ))}
+                                    </div>
+                                </div>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

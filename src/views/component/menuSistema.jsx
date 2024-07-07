@@ -1,6 +1,8 @@
 import React from "react";
 import { Menu, Image } from "semantic-ui-react";
 import logo from '../../assets/img/logo1.jpg';
+import Avatar from "./avatar";
+
 
 class MenuSistema extends React.Component {
     state = {
@@ -93,34 +95,7 @@ class MenuSistema extends React.Component {
                             marginLeft: '2%'
                         }}
                     >
-                        <div style={{
-                                    borderRadius: 6,
-                                    width: '40px',
-                                    height: '40px',
-                                    border: '1px solid var(--azul-cheguei)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    
-                                }}>
-                            <div
-                                style={{
-                                    backgroundColor: 'var(--azul-branquelo)',
-                                    borderRadius: 6,
-                                    width: '35px',
-                                    height: '35px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    color: 'var(--roxo-bonitinho)',
-                                    fontFamily: 'Poppins',
-                                    fontSize: '2em',
-                                    fontWeight: 'bold'
-                                }}
-                            >
-                                {user.charAt(0).toUpperCase()}
-                            </div>
-                        </div>
+                    <Avatar usuario={user}/>
 
                         <div
                             style={{

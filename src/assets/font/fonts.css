@@ -8,3 +8,8 @@
   font-family: 'Poppins';
   src: local('Poppins'), url('./Poppins-Regular.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto'), url('./Roboto-Regular.ttf') format('truetype');
+}
