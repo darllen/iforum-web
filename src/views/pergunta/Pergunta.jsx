@@ -1,5 +1,5 @@
 import React from "react";
-import MenuSistema from "../../menuSistema"
+import MenuSistema from "../component/menuSistema";
 
 
 export default function Pergunta() {
