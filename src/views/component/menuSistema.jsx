@@ -1,6 +1,8 @@
 import React from "react";
 import { Menu, Image } from "semantic-ui-react";
-import logo from './assets/img/logo1.jpg';
+import logo from '../../assets/img/logo1.jpg';
+import Avatar from "./avatar";
+
 
 class MenuSistema extends React.Component {
     state = {
@@ -14,7 +16,7 @@ class MenuSistema extends React.Component {
 
         return (
             <>
-                <Menu inverted borderless style={{ height: '8vh', backgroundColor: '#1B0C27' }}>
+                <Menu inverted borderless style={{ height: '8vh', backgroundColor: 'var(--roxo-bonitinho)'}}>
                     <Menu.Item style={{ marginLeft: '10%' }}>
                         <Image src={logo} size='small' />
                     </Menu.Item>
@@ -27,11 +29,11 @@ class MenuSistema extends React.Component {
                                 border: 0, 
                                 borderRadius: 50, 
                                 background: 'transparent', 
-                                color: '#D6FBFF', 
+                                color: 'var(--azul-branquelo)', 
                                 fontFamily: 'Poppins', 
                                 padding: '2.5%', 
                                 paddingLeft: '7%', 
-                                backgroundColor: '#32243d',
+                                backgroundColor: 'var(--roxo-anemico)',
                                 paddingRight: '30px'
                             }} 
                         />
@@ -42,7 +44,7 @@ class MenuSistema extends React.Component {
                                 top: '50%', 
                                 right: '5%', 
                                 transform: 'translateY(-50%)', 
-                                color: '#D6FBFF' 
+                                color: 'var(--azul-branquelo)' 
                             }}
                         ></i>
                     </Menu.Item>
@@ -53,7 +55,7 @@ class MenuSistema extends React.Component {
                     >
                         <div 
                             style={{ 
-                                backgroundColor: '#32243d', 
+                                backgroundColor: 'var(--roxo-anemico)', 
                                 borderRadius: 6, 
                                 width: '40px', 
                                 height: '40px', 
@@ -72,7 +74,7 @@ class MenuSistema extends React.Component {
                     >
                         <div 
                             style={{ 
-                                backgroundColor: '#32243d', 
+                                backgroundColor: 'var(--roxo-anemico)', 
                                 borderRadius: 6, 
                                 width: '40px', 
                                 height: '40px', 
@@ -93,41 +95,14 @@ class MenuSistema extends React.Component {
                             marginLeft: '2%'
                         }}
                     >
-                        <div style={{
-                                    borderRadius: 6,
-                                    width: '40px',
-                                    height: '40px',
-                                    border: '1px solid #00C9FF',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    
-                                }}>
-                            <div
-                                style={{
-                                    backgroundColor: '#D6FBFF',
-                                    borderRadius: 6,
-                                    width: '35px',
-                                    height: '35px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    color: '#1B0C27',
-                                    fontFamily: 'Poppins',
-                                    fontSize: '2em',
-                                    fontWeight: 'bold'
-                                }}
-                            >
-                                {user.charAt(0).toUpperCase()}
-                            </div>
-                        </div>
+                    <Avatar usuario={user}/>
 
                         <div
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                color: '#D6FBFF',
+                                color: 'var(--azul-branquelo)',
                                 fontFamily: 'Poppins',
                                 fontSize: '1em',
                                 fontWeight: 'bold',

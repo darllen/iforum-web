@@ -1,38 +1,44 @@
-.App {
-  text-align: center;
+/* cores */
+:root {
+  --background-page: #F7F7F7;
+  --roxo-bonitinho: #1B0C27;
+  --roxo-anemico: #32243d;
+  --azul-cheguei: #00C9FF;
+  --azul-normal: #5271FF;
+  --azul-branquelo: #D6FBFF;
+  --cinza-escuro: #4D585E;
+  --cinza-medio: #C8C8C8;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* efeitos */
+.light-shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.medium-shadow {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.dark-shadow {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-.App-link {
-  color: #61dafb;
+.borda-azul-normal {
+  border: none;
+  border-bottom: 1px solid var(--azul-normal);
+  background: transparent;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.pesquisa-curso {
+  border: none !important;
+  outline: none !important; 
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  padding: 10px;
+  font-size: 1em;
+  color: var(--roxo-bonitinho);
+  outline: none;
+  font-family: 'Poppins';
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
