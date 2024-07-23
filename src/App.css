@@ -38,7 +38,25 @@
   padding: 10px;
   font-size: 1em;
   color: var(--roxo-bonitinho);
-  outline: none;
   font-family: 'Poppins';
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.text-area {
+  resize: none;
+  overflow: auto;
+  padding: 15px; 
+  font-family:"Roboto";
+  color: var(--roxo-bonitinho); 
+  -moz-box-shadow: inset 0 0 4 rgba(0,0,0,0.2); 
+  -webkit-box-shadow: inset 0 0 4 rgba(0, 0, 0, 0.2); 
+  box-shadow: inner 0 0 4 rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 15px; 
+  -moz-border-radius: 15px; 
+  border-radius: 15px;   
+}
+
+.text-area:focus { 
+  outline: none !important;
+  border-color: #719ECE;
 }
