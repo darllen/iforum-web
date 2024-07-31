@@ -20,7 +20,6 @@ const Select = ({ tipo, cursoSelecionado, setCursoSelecionado, periodoSelecionad
       setPeriodos([]);
       setPeriodoSelecionado(null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cursoSelecionado]);
 
   useEffect(() => {
@@ -72,7 +71,7 @@ const Select = ({ tipo, cursoSelecionado, setCursoSelecionado, periodoSelecionad
   };
 
   return (
-    <div>
+    <div style={{ flex: 1 }}>
       {tipo === "Curso" && (
         <div className="pesquisa-curso" style={{ backgroundColor: 'white', borderRadius: 10, alignItems: 'center' }}>
           <div style={{ display: 'flex' }}>
