@@ -1,14 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Menu, Image, Icon, Form, Button } from "semantic-ui-react";
 import logo from '../../assets/img/logo1.jpg';
 import Avatar from "./avatar";
-import { Link } from "react-router-dom";
 
 
 class MenuSistema extends React.Component {
     state = {
         activeItem: 'search',
-        dropdownVisible: false,
+        dropdownUserVisible: false,
+        dropdownRankingVisible: false,
         isProfileHovered: false,
         isExitHovered: false,
         isModalVisible: false 
@@ -16,12 +17,18 @@ class MenuSistema extends React.Component {
 
     toggleDropdownUser = () => {
         this.setState((prevState) => ({
-            dropdownVisible: !prevState.dropdownVisible
+            dropdownUserVisible: !prevState.dropdownUserVisible
+        }));
+    }
+
+    toggleDropdownRanking = () => {
+        this.setState((prevState) => ({
+            dropdownRankingVisible: !prevState.dropdownRankingVisible
         }));
     }
 
     closeDropdown = () => {
-        this.setState({ dropdownVisible: false });
+        this.setState({ dropdownUserVisible: false, dropdownRankingVisible: false });
     }
 
     handleMouseEnter = (item) => {
@@ -33,7 +40,7 @@ class MenuSistema extends React.Component {
     }
 
     openModal = () => {
-        this.setState({ dropdownVisible: false, isModalVisible: true });
+        this.setState({ dropdownUserVisible: false, isModalVisible: true });
     }
 
     closeModal = () => {
@@ -46,7 +53,16 @@ class MenuSistema extends React.Component {
             email: "jamilly@discente.ifpe.edu.br",
             senha: "criptonemane"
         }
-        const { dropdownVisible, isProfileHovered, isExitHovered,isModalVisible } = this.state;
+
+        const bestUsers = [
+            { id: 1, username: 'Nilson Júnior', curtidas: 364 },
+            { id: 2, username: 'Nilson Júnior', curtidas: 364 },
+            { id: 3, username: 'Nilson Júnior', curtidas: 364 },
+            { id: 4, username: 'Nilson Júnior', curtidas: 364 },
+            { id: 5, username: 'Nilson Júnior', curtidas: 364 }
+        ];
+
+        const { dropdownUserVisible, dropdownRankingVisible, isProfileHovered, isExitHovered, isModalVisible } = this.state;
 
         return (
             <>
@@ -83,8 +99,8 @@ class MenuSistema extends React.Component {
                         ></i>
                     </Menu.Item>
                     <Menu.Item
-                        name='home'
-                        onClick={this.handleItemClick} 
+                        as={Link}
+                        to="/home"
                         style={{ marginLeft: '5%', backgroundColor: 'transparent' }}
                     >
                         <div 
@@ -103,7 +119,7 @@ class MenuSistema extends React.Component {
                     </Menu.Item>
                     <Menu.Item
                         name='ranking'
-                        onClick={this.handleItemClick}
+                        onClick={this.toggleDropdownRanking}
                         style={{ backgroundColor: 'transparent' }}
                     >
                         <div 
@@ -136,7 +152,7 @@ class MenuSistema extends React.Component {
                             {user.username.length <= 10 ? user.username : user.username.substring(0, 20) + (user.username.length > 20 ? '  .  .  .' : '')}
                         </div>
                         <Image src="https://api.iconify.design/material-symbols:arrow-drop-down.svg?color=%23ffffff" style={{ width: '25px', marginLeft: '7px' }} />
-                        { dropdownVisible && (
+                        { dropdownUserVisible && (
                             <div style={{ position: 'absolute', top: '100%', right: 0, backgroundColor: 'white', listStyle: 'none', padding: 0, margin: 0, boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)', zIndex: 1001, width: '20vw', height: '36vh' }} >
                                 <div style={{ padding: '8% 0 5% 0', display: 'flex', justifyContent: 'center', gap: '7%' }}>
                                     <Avatar usuario={user.username}/>
@@ -168,6 +184,29 @@ class MenuSistema extends React.Component {
                                 </Link>
                             </div>
                         )}
+                        {/* fundo do dropdown */}
+                        {dropdownUserVisible && ( <div onClick={this.closeDropdown} style={{ position: 'fixed', top: '8vh', left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 1000 }} /> )}
+
+                        { dropdownRankingVisible && (
+                            <div style={{ position: 'absolute', top: '100%', right: 0, backgroundColor: 'white', listStyle: 'none', padding: 0, margin: 0, boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)', zIndex: 1001, width: '20vw', height: 'auto' }} >
+                                <div style={{ padding: '8% 0 5% 0', display: 'flex', justifyContent: 'center', gap: '7%' }}>
+                                    <Icon size='large' color='yellow' name='trophy' />
+                                    <p style={{ display: 'flex', alignItems: 'center', color: 'var(--cinza-escuro)', fontFamily: 'Poppins', fontSize: '1.3em', fontWeight: 'bold' }} >
+                                        Melhores usuários
+                                    </p>
+                                </div> 
+                                { bestUsers.map((bu) => (
+                                    <div style={{ display: 'flex', alignItems: 'center', borderBottom: '1.5px solid #E6E6E6', padding: '3% 10%' }}>
+                                        <Avatar usuario={user.username}/>
+                                        <div style={{ padding: '5% 10%',textAlign: 'right', color: 'var(--cinza-escuro)', fontSize: '1.3em' }}>
+                                            {bu.username}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        {/* fundo do dropdown */}
+                        {dropdownRankingVisible && ( <div onClick={this.closeDropdown} style={{ position: 'fixed', top: '8vh', left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 1000 }} /> )}
                     </Menu.Item>
                 </Menu>
                 
