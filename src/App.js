@@ -1,11 +1,9 @@
 import React from 'react';
-
 //import { Segment } from 'semantic-ui-react';
-
-
 import './App.css';
 import './assets/font/fonts.css';
 import Rotas from './Rotas';
+
 
 
 export default function App() {
