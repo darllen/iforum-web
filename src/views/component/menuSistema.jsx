@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Image, Icon } from "semantic-ui-react";
+import { Menu, Image, Icon, Form, Button } from "semantic-ui-react";
 import logo from '../../assets/img/logo1.jpg';
 import Avatar from "./avatar";
 import { Link } from "react-router-dom";
@@ -41,7 +41,11 @@ class MenuSistema extends React.Component {
     }
     
     render() {
-        const username = "Jamilly Anunciada";
+        const user = {
+            username: "Jamilly Anunciada",
+            email: "jamilly@discente.ifpe.edu.br",
+            senha: "criptonemane"
+        }
         const { dropdownVisible, isProfileHovered, isExitHovered,isModalVisible } = this.state;
 
         return (
@@ -126,18 +130,18 @@ class MenuSistema extends React.Component {
                             position: 'relative'
                         }}
                     >
-                        <Avatar usuario={username}/>
+                        <Avatar usuario={user.username}/>
 
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--azul-branquelo)', fontFamily: 'Poppins', fontSize: '1em', fontWeight: 'bold', marginLeft: '15px' }} >
-                            {username.length <= 10 ? username : username.substring(0, 20) + (username.length > 20 ? '  .  .  .' : '')}
+                            {user.username.length <= 10 ? user.username : user.username.substring(0, 20) + (user.username.length > 20 ? '  .  .  .' : '')}
                         </div>
                         <Image src="https://api.iconify.design/material-symbols:arrow-drop-down.svg?color=%23ffffff" style={{ width: '25px', marginLeft: '7px' }} />
                         { dropdownVisible && (
                             <div style={{ position: 'absolute', top: '100%', right: 0, backgroundColor: 'white', listStyle: 'none', padding: 0, margin: 0, boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)', zIndex: 1001, width: '20vw', height: '36vh' }} >
                                 <div style={{ padding: '8% 0 5% 0', display: 'flex', justifyContent: 'center', gap: '7%' }}>
-                                    <Avatar usuario={username}/>
+                                    <Avatar usuario={user.username}/>
                                     <p style={{ display: 'flex', alignItems: 'center', color: 'var(--cinza-escuro)', fontFamily: 'Poppins', fontSize: '1.5em', fontWeight: 'bold' }} >
-                                        {username.length <= 10 ? username : username.substring(0, 20) + (username.length > 20 ? '  .  .  .' : '')}
+                                        {user.username.length <= 10 ? user.username : user.username.substring(0, 20) + (user.username.length > 20 ? '  .  .  .' : '')}
                                     </p>
                                 </div> 
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '5% 5%', borderBottom: '1.5px solid #E6E6E6' }}>
@@ -171,13 +175,13 @@ class MenuSistema extends React.Component {
                     <div id="Modal" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'white', boxShadow: '0 2px 10px rgba(0, 0, 0, 0.3)', zIndex: 1002, height: "60%", width: "40%", borderRadius: 15 }}>
                         <div id="Header" style={{borderBottom: '1.5px solid #E6E6E6' }}>
                             <div style={{ display: "flex", justifyContent: "right", width: "10%", cursor: "pointer", marginLeft: 'auto', padding: '3% 5%' }} >
-                                <Icon name="close" style={{ color: "var(--cinza-medio)", width: "500px" }} />
+                                <Icon onClick={this.closeModal} name="close" style={{ color: "var(--cinza-medio)", width: "500px" }} />
                             </div>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: 'space-between', margin: '0 7%' }}>
                                 <div style={{ display: 'flex', gap: '7%', width: '50%' }}>
-                                    <Avatar usuario={username}/>
+                                    <Avatar usuario={user.username}/>
                                     <p style={{ color: 'var(--cinza-escuro)', fontFamily: 'Poppins', fontSize: '1.5em', fontWeight: 'bold' }} >
-                                        {username.length <= 10 ? username : username.substring(0, 20) + (username.length > 20 ? '  .  .  .' : '')}
+                                        {user.username.length <= 10 ? user.username : user.username.substring(0, 20) + (user.username.length > 20 ? '  .  .  .' : '')}
                                     </p>
                                 </div> 
                                 <div style={{ width: '50%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '5% 0%' }}>
@@ -196,24 +200,37 @@ class MenuSistema extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "left", fontFamily: "Roboto", fontWeight: 550, fontSize: '1.5em'}} >
+                        <div style={{ display: "flex", fontFamily: "Poppins", fontWeight: 600, fontSize: '1.5em', margin: '4% 7%'}} >
                             Informações
                         </div>
+                        <Form>
+                            <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between', fontFamily: "Poppins", margin: "1% 10%", gap: 15}}>
+                                <div style={{ width: '100%'}}>
+                                    <Form.Input label="Nome" placeholder={user.username} />
+                                </div>
+                                <div style={{ width: '100%'}}>
+                                    <Form.Input label="E-mail" placeholder={user.email} style={{ width: '100%'}} />
+                                </div>                                
+                            </div>
+                            <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between', fontFamily: "Poppins", margin: "3% 10%", gap: 15}}>
+                                <div style={{ width: '100%'}}>
+                                    <Form.Input type="password" label="Senha" placeholder='Nova senha' />
+                                </div>
+                                <div style={{ width: '100%'}}>
+                                    <Form.Input type="password" label="Confirmar senha" placeholder='Confirme sua senha' />
+                                </div>                                
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '5% 10%' }}>
+                                <Button onClick={this.closeModal} type="button" style={{ backgroundColor: 'var(--azul-normal)' }}>
+                                    <Link to={'/home'} style={{ color: 'var(--azul-branquelo)', fontWeight: 500, fontFamily: 'Poppins', textDecoration: 'none' }}>Salvar edição</Link>
+                                </Button>
+                            </div>
+                        </Form>
                     </div>
                 )}
                 
-                {/* Fundo do modal */}
-                {isModalVisible && (
-                    <div onClick={this.closeModal} style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        zIndex: 1000
-                    }} />
-                )}
+                {/* fundo do modal */}
+                {isModalVisible && ( <div onClick={this.closeModal} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 1000 }} /> )}
             </>
         )
     }
