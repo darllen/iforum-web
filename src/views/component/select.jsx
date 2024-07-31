@@ -20,7 +20,7 @@ const Select = ({ tipo, cursoSelecionado, setCursoSelecionado, periodoSelecionad
       setPeriodos([]);
       setPeriodoSelecionado(null);
     }
-  }, [cursoSelecionado]);
+  }, [cursoSelecionado, setPeriodoSelecionado]);
 
   useEffect(() => {
     if (periodoSelecionado) {
