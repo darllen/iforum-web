@@ -12,8 +12,9 @@ aside {
   color: var(--text-color-1);
   font-weight: 700;
   width: 100%;
-  background-color: whitevv;
+  background-color: white;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
 }
 
 
@@ -68,4 +69,12 @@ ul>li>div {
 .see-more:hover {
   background-color: rgb(0, 201, 255, 0.5);
 
+}
+
+.topic-item{
+      display: flex;
+    align-items: center;
+    font-size: 13px;
+    padding: 1.2rem; 
+   text-align: start; 
 }
