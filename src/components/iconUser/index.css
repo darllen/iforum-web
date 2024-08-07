@@ -1,19 +1,50 @@
 .card-icon {
-    border-radius: 6px;
-    width: 40px;
-    height: 40px;
-    border: 1px solid #00C9FF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color:var(--bg-dark-blue);
-    color: white;
-    font-family: 'Poppins';
-    font-size: 2em;
-    font-weight: bold;
-    margin: 0;
-  }
+  height: fit-content;
+  border-radius: 0.6rem;
+  font-size: 2em;
 
-  .card-icon-image {
-    width: 25px;
-  }
+  font-weight: bold;
+  font-family: 'Poppins';
+  color: white;
+  width: 80%;
+  height: 80%;
+  margin: 0;
+}
+
+.external-border {
+  border-radius: 0.6rem;
+  display: flex;
+  align-items: center;
+
+
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.two {
+  background-color: var(--bg-light-blue-2);
+  border: 1px solid var(--bg-light-blue);
+  color: black;
+}
+
+.one {
+  
+  background-color: var(--bg-dark-blue);
+  border: 1px solid var(--bg-dark-blue);
+
+}
+
+.card-icon-image {
+  width: 25px;
+}
+
+
+.external-one {
+  border: 2px solid var(--bg-dark-blue);
+}
+
+
+.external-two {
+  border: 2px solid var(--bg-light-blue);
+}

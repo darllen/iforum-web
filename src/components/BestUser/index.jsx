@@ -9,7 +9,7 @@ const BestUserCard = ({ name, score }) => {
         <div className="best-user-card">
             <div className="user-info">
 
-                <IconUser user={name} />
+                <IconUser type={"one"} user={name} />
                 <span className="user-name">{name}</span>
             </div>
             

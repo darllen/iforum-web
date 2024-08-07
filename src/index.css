@@ -1,7 +1,12 @@
 :root {
   --text-color-1: rgb(77, 85, 89);
+  --bg-gray: rgb(119, 119, 119);
   --bg-light-blue: rgb(0, 201, 255);
+  --bg-light-blue-2:rgba(214, 251, 255, 1);
   --bg-dark-blue: rgba(82, 113, 255, 1);
+  --bg-dark: rgba(27, 12, 39, 1);
+  --bg-main: rgba(247, 247, 247, 1);
+  --bg-main-dark: rgba(196, 196, 204, 1)
 }
 
 body {
@@ -13,6 +18,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 62.5%;
 }
 
 code {
