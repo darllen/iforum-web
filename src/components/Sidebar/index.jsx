@@ -62,11 +62,10 @@ const Sidebar = () => {
             {topics.map((topic, index) => (
               <li key={index} className="topic-item">
                 <p>{topic}</p>
-                <hr/>
               </li>
             ))}
 
-                <hr/>
+            <hr />
           </ul>
           <button className="see-more">Ver mais</button>
         </div>

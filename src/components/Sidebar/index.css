@@ -1,5 +1,5 @@
 aside {
-  width:30%;
+  width: 30%;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 500;
   padding: 0 2rem;
@@ -26,10 +26,11 @@ aside {
   margin-bottom: 1.5rem;
 }
 
-.title-div h2{
-  font-size:1.6rem;
+.title-div h2 {
+  font-size: 1.6rem;
 
 }
+
 .aside-ul {
   list-style: none;
 
@@ -71,10 +72,15 @@ ul>li>div {
 
 }
 
-.topic-item{
-      display: flex;
-    align-items: center;
-    font-size: 13px;
-    padding: 1.2rem; 
-   text-align: start; 
+.topic-item {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  padding: 1.2rem;
+  text-align: start;
+  border-bottom: 4px solid rgb(128, 128, 128, 0.2);
+}
+
+.topic-item:last-child {
+  border-bottom: none;
 }
