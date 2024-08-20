@@ -1,30 +1,38 @@
-import React, {useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
-import {Image, FormField, Button, Form, Message} from 'semantic-ui-react';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Image, FormField, Button, Form } from 'semantic-ui-react';
 import logo from '../../assets/img/logo1.jpg';
 import modelo from '../../assets/img/modelo2.jpg';
-import {registerInAPI} from "../../services/auth";
+import { registerInAPI } from "../../services/auth";
+import { toast } from 'react-toastify';
+
 
 export default function Cadastro() {
+
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+
     const navigate = useNavigate();
+
 
     const handleCadastro = async () => {
         try {
-            const response = await registerInAPI({
-                nome: nome, email, senha: senha });
+            var newUser = {
+                nome: nome, 
+                email: email, 
+                senha: senha 
+            }
+            const response = await registerInAPI(newUser);
+            console.log(response)
             if (response && response.id) {
-                setSuccessMessage("Cadastro realizado com sucesso!");
+                toast.success("Cadastro realizado com sucesso!");
                 setTimeout(() => navigate('/login'), 2000); // Redireciona após 2 segundos
             } else {
-                setErrorMessage("Erro ao tentar criar a conta. Verifique os dados e tente novamente.");
+                toast.error("Erro ao tentar criar a conta. Verifique os dados e tente novamente.");
             }
         } catch (error) {
-            setErrorMessage("Erro ao tentar criar a conta. Por favor, tente novamente mais tarde.");
+            toast.error("Erro ao tentar criar a conta. Por favor, tente novamente mais tarde.");
         }
     };
 
@@ -39,22 +47,7 @@ export default function Cadastro() {
             <div style={{ backgroundColor: '#1B0C27', width: '40vw', top: 0, bottom: 0, position: 'fixed', boxShadow: '-5px 0px 5px rgba(0, 0, 0, 0.1)', right: 0, minHeight: '100vh' }}>
                 <div style={{ maxWidth: '90%', width: 900, display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10vh' }}>
                     <Image src={logo} size='medium' style={{ maxWidth: '100%', marginBottom: '8vh' }} />
-                    <Form
-                        onSubmit={(e) => { e.preventDefault();
-                            handleCadastro(); }}
-                        >
-                        {errorMessage && (
-                            <Message negative>
-                                <Message.Header>Erro no cadastro</Message.Header>
-                                <p>{errorMessage}</p>
-                            </Message>
-                        )}
-                        {successMessage && (
-                            <Message positive>
-                                <Message.Header>Sucesso!</Message.Header>
-                                <p>{successMessage}</p>
-                            </Message>
-                        )}
+                    <Form onSubmit={(e) => { e.preventDefault(); handleCadastro(); }} >
                         <FormField style={formFieldStyle}>
                             <label style={labelStyle}>Seu nome</label>
                             <input

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
-
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import Inicio from './views/usuario/Inicio';
 import Login from './views/usuario/Login';
 import Cadastro from './views/usuario/Cadastro';
@@ -35,6 +36,14 @@ function Rotas() {
                     </PrivateRoute>
                 } />
             </Routes>
+            <ToastContainer 
+                position="top-right"
+                autoClose={4000} 
+                hideProgressBar={true} 
+                closeOnClick 
+                pauseOnHover
+                theme="light"
+            />
         </>
     )
 }

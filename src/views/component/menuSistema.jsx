@@ -1,9 +1,9 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Menu, Image, Icon, Form, Button } from "semantic-ui-react";
 import logo from '../../assets/img/logo1.jpg';
 import Avatar from "./avatar";
-import {getUser, setUser} from "../../helpers/authStore";
+import { getUser, setUser } from "../../helpers/authStore";
 
 
 class MenuSistema extends React.Component {
