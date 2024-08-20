@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, Image, Icon, Form, Button } from "semantic-ui-react";
 import logo from '../../assets/img/logo1.jpg';
 import Avatar from "./avatar";
+import { getUser, setUser } from "../../helpers/authStore";
 
 
 class MenuSistema extends React.Component {
@@ -46,13 +47,20 @@ class MenuSistema extends React.Component {
     closeModal = () => {
         this.setState({ isModalVisible: false });
     }
+    handleLogout = () => {
+        setUser(null);
+        localStorage.removeItem('user');
+        window.location.href = "/login";
+    };
+
     
     render() {
-        const user = {
-            username: "Jamilly Anunciada",
-            email: "jamilly@discente.ifpe.edu.br",
-            senha: "criptonemane"
+        const user = getUser();
+        if (!user) {
+            return;
         }
+
+
 
         const bestUsers = [
             { id: 1, username: 'Nilson Júnior', curtidas: 364 },
@@ -146,18 +154,18 @@ class MenuSistema extends React.Component {
                             position: 'relative'
                         }}
                     >
-                        <Avatar usuario={user.username}/>
+                        <Avatar usuario={user.nome}/>
 
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--azul-branquelo)', fontFamily: 'Poppins', fontSize: '1em', fontWeight: 'bold', marginLeft: '15px' }} >
-                            {user.username.length <= 10 ? user.username : user.username.substring(0, 20) + (user.username.length > 20 ? '  .  .  .' : '')}
+                            {user.nome.length <= 10 ? user.nome : user.nome.substring(0, 20) + (user.nome.length > 20 ? '  .  .  .' : '')}
                         </div>
                         <Image src="https://api.iconify.design/material-symbols:arrow-drop-down.svg?color=%23ffffff" style={{ width: '25px', marginLeft: '7px' }} />
                         { dropdownUserVisible && (
                             <div style={{ position: 'absolute', top: '100%', right: 0, backgroundColor: 'white', listStyle: 'none', padding: 0, margin: 0, boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)', zIndex: 1001, width: '20vw', height: '36vh' }} >
                                 <div style={{ padding: '8% 0 5% 0', display: 'flex', justifyContent: 'center', gap: '7%' }}>
-                                    <Avatar usuario={user.username}/>
+                                    <Avatar usuario={user.nome}/>
                                     <p style={{ display: 'flex', alignItems: 'center', color: 'var(--cinza-escuro)', fontFamily: 'Poppins', fontSize: '1.5em', fontWeight: 'bold' }} >
-                                        {user.username.length <= 10 ? user.username : user.username.substring(0, 20) + (user.username.length > 20 ? '  .  .  .' : '')}
+                                        {user.nome.length <= 10 ? user.nome : user.nome.substring(0, 20) + (user.nome.length > 20 ? '  .  .  .' : '')}
                                     </p>
                                 </div> 
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '5% 5%', borderBottom: '1.5px solid #E6E6E6' }}>
@@ -177,11 +185,12 @@ class MenuSistema extends React.Component {
                                 <div onClick={(e) => { e.stopPropagation(); this.openModal()}} onMouseEnter={() => this.handleMouseEnter('isProfileHovered')} onMouseLeave={() => this.handleMouseLeave('isProfileHovered')} style={{ backgroundColor: isProfileHovered ? '#E6E6E6' : 'white', transition: 'background-color 0.3s', padding: '5% 10%',textAlign: 'right', color: 'var(--cinza-escuro)', fontSize: '1.3em' ,borderBottom: '1.5px solid #E6E6E6' }}>
                                     <p>Ver perfil</p> 
                                 </div>
-                                <Link to={"/"}>
-                                    <div onMouseEnter={() => this.handleMouseEnter('isExitHovered')} onMouseLeave={() => this.handleMouseLeave('isExitHovered')} style={{ backgroundColor: isExitHovered ? '#E6E6E6' : 'white', transition: 'background-color 0.3s', padding: '5% 10%',textAlign: 'right', color: 'var(--cinza-escuro)', fontSize: '1.3em', textDecoration: 'underline' }}>
+                                    <div
+                                        onClick={this.handleLogout}
+                                        onMouseEnter={() => this.handleMouseEnter('isExitHovered')}
+                                         onMouseLeave={() => this.handleMouseLeave('isExitHovered')} style={{ backgroundColor: isExitHovered ? '#E6E6E6' : 'white', transition: 'background-color 0.3s', padding: '5% 10%',textAlign: 'right', color: 'var(--cinza-escuro)', fontSize: '1.3em', textDecoration: 'underline' }}>
                                         Sair
                                     </div>
-                                </Link>
                             </div>
                         )}
                         {/* fundo do dropdown */}
@@ -197,7 +206,7 @@ class MenuSistema extends React.Component {
                                 </div> 
                                 { bestUsers.map((bu) => (
                                     <div style={{ display: 'flex', alignItems: 'center', borderBottom: '1.5px solid #E6E6E6', padding: '3% 10%' }}>
-                                        <Avatar usuario={user.username}/>
+                                        <Avatar usuario={user.nome}/>
                                         <div style={{ padding: '5% 10%',textAlign: 'right', color: 'var(--cinza-escuro)', fontSize: '1.3em' }}>
                                             {bu.username}
                                         </div>
@@ -218,9 +227,9 @@ class MenuSistema extends React.Component {
                             </div>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: 'space-between', margin: '0 7%' }}>
                                 <div style={{ display: 'flex', gap: '7%', width: '50%' }}>
-                                    <Avatar usuario={user.username}/>
+                                    <Avatar usuario={user.nome}/>
                                     <p style={{ color: 'var(--cinza-escuro)', fontFamily: 'Poppins', fontSize: '1.5em', fontWeight: 'bold' }} >
-                                        {user.username.length <= 10 ? user.username : user.username.substring(0, 20) + (user.username.length > 20 ? '  .  .  .' : '')}
+                                        {user.nome.length <= 10 ? user.nome : user.nome.substring(0, 20) + (user.nome.length > 20 ? '  .  .  .' : '')}
                                     </p>
                                 </div> 
                                 <div style={{ width: '50%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '5% 0%' }}>
@@ -245,7 +254,7 @@ class MenuSistema extends React.Component {
                         <Form>
                             <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between', fontFamily: "Poppins", margin: "1% 10%", gap: 15}}>
                                 <div style={{ width: '100%'}}>
-                                    <Form.Input label="Nome" placeholder={user.username} />
+                                    <Form.Input label="Nome" placeholder={user.nome} />
                                 </div>
                                 <div style={{ width: '100%'}}>
                                     <Form.Input label="E-mail" placeholder={user.email} style={{ width: '100%'}} />
