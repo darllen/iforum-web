@@ -6,14 +6,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #D6FBFF;
-    color: #1B0C27;
+    background-color:var(--bg-dark-blue);
+    color: white;
     font-family: 'Poppins';
     font-size: 2em;
     font-weight: bold;
+    margin: 0;
   }
 
   .card-icon-image {
     width: 25px;
-    margin-left: 7px;
   }
