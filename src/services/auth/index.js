@@ -1,6 +1,6 @@
 
 async function requestAPI(url, method, body, additionalHeader) {
-    const baseURL = "http://localhost:8081";
+    const baseURL = "http://localhost:8080";
 
     const defaultHeaders = {
         "Content-type": "application/json",

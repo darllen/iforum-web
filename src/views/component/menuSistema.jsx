@@ -196,7 +196,7 @@ class MenuSistema extends React.Component {
                     <Dropdown 
                         item 
                         text='Home'
-                        open={dropdownOpen.home}
+                        //open={dropdownOpen.home}
                         onClick={() => this.handleDropdownClick('home')}
                         style={{ marginLeft: '5%', backgroundColor: 'transparent' }}
                     >
