@@ -139,8 +139,8 @@ export default function Home() {
           </Grid>
         </Container>
       </div>
-      <Modal basic onClose={() => setOpenModal(false)} onOpen={() => setOpenModal(true)} open={openModal}>
-        <div style={{ backgroundColor: "white", height: "75vh", width: "60vw", borderRadius: 15 }} >
+      <Modal basic onClose={() => setOpenModal(false)} onOpen={() => setOpenModal(true)} open={openModal} style={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white", height: "60%", width: "50%", borderRadius: 15}}>
+        <div style={{  }} >
           <Header style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "4% 3% 2% 10%" }} >
             <div style={{ display: "flex", justifyContent: "left", fontFamily: "Roboto", width: "93%", }} >
               Inicie uma nova discussão

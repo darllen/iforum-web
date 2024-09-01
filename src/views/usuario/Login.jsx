@@ -1,10 +1,37 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Image, FormField, Button, Form } from 'semantic-ui-react';
 import logo from '../../assets/img/logo1.jpg';
 import modelo from '../../assets/img/modelo1.jpg';
+import { signInAPI } from "../../services/auth";
+import { setUser } from "../../helpers/authStore";
+import { toast } from 'react-toastify';
 
 export default function Login() {
+
+    const [email, setEmail] = useState("");
+    const [senha, setsenha] = useState("");
+
+    const navigate = useNavigate();
+
+
+    const handleLogin = async () => {
+        try {
+            const response = await signInAPI(email, senha);
+            if (response) {
+                setUser(response[0]);
+                toast.success(`Bem vindo(a), ${response[0].nome}!`)
+                navigate('/home')
+            } else {
+                console.error("Erro no login", response);
+                toast.error("Usuário ou senha incorretos.");
+            }
+        } catch (error) {
+            console.error("Erro na requisição de login", error);
+            toast.error("Erro ao tentar fazer login. Por favor, tente novamente mais tarde.");
+        }
+    };
+
     return (
         <div>
             {/* left side */}
@@ -15,14 +42,27 @@ export default function Login() {
             <div style={rightBarStyle}>
                 <div style={formContainerStyle}>
                     <Image src={logo} size='medium' style={logoStyle} />
-                    <Form action="/home" method="get">
+                    <Form onSubmit={handleLogin} method="get">
                         <FormField style={formFieldStyle}>
                             <label style={labelStyle}>E-mail</label>
-                            <input placeholder='seuemail@email.com' style={inputStyle} />
+                            <input
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder='seuemail@email.com'
+                                style={inputStyle}
+                                value={email}
+                                required={true}
+                            />
                         </FormField>
                         <FormField>
                             <label style={labelStyle}>Senha</label>
-                            <input placeholder='********' style={inputStyle} />
+                            <input
+                                type="password"
+                                onChange={(e) => setsenha(e.target.value)}
+                                placeholder='********'
+                                style={inputStyle}
+                                value={senha}
+                                required={true}
+                            />
                         </FormField>
                         <Button type='submit' style={buttonStyle}>Entrar</Button>
                     </Form>

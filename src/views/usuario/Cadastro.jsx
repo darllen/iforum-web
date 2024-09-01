@@ -1,10 +1,42 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Image, FormField, Button, Form } from 'semantic-ui-react';
 import logo from '../../assets/img/logo1.jpg';
 import modelo from '../../assets/img/modelo2.jpg';
+import { registerInAPI } from "../../services/auth";
+import { toast } from 'react-toastify';
+
 
 export default function Cadastro() {
+
+    const [nome, setNome] = useState("");
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+
+    const navigate = useNavigate();
+
+
+    const handleCadastro = async () => {
+        try {
+            var newUser = {
+                nome: nome, 
+                email: email, 
+                senha: senha 
+            }
+            const response = await registerInAPI(newUser);
+            console.log(response)
+            if (response && response.id) {
+                toast.success("Cadastro realizado com sucesso!");
+                setTimeout(() => navigate('/login'), 2000); // Redireciona após 2 segundos
+            } else {
+                toast.error("Erro ao tentar criar a conta. Verifique os dados e tente novamente.");
+            }
+        } catch (error) {
+            toast.error("Erro ao tentar criar a conta. Por favor, tente novamente mais tarde.");
+        }
+    };
+
+
     return (
         <div>
             {/* left side */}
@@ -15,18 +47,34 @@ export default function Cadastro() {
             <div style={{ backgroundColor: '#1B0C27', width: '40vw', top: 0, bottom: 0, position: 'fixed', boxShadow: '-5px 0px 5px rgba(0, 0, 0, 0.1)', right: 0, minHeight: '100vh' }}>
                 <div style={{ maxWidth: '90%', width: 900, display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10vh' }}>
                     <Image src={logo} size='medium' style={{ maxWidth: '100%', marginBottom: '8vh' }} />
-                    <Form action="/home" method="get">
+                    <Form onSubmit={(e) => { e.preventDefault(); handleCadastro(); }} >
                         <FormField style={formFieldStyle}>
                             <label style={labelStyle}>Seu nome</label>
-                            <input placeholder='Seu nome aqui' style={inputStyle} />
+                            <input
+                                onChange={(e) => setNome(e.target.value)}
+                                placeholder='Seu nome aqui'
+                                style={inputStyle}
+                                value={nome}
+                            />
                         </FormField>
                         <FormField style={formFieldStyle}>
                             <label style={labelStyle}>E-mail</label>
-                            <input placeholder='seuemail@email.com' style={inputStyle} />
+                            <input
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder='seuemail@email.com'
+                                style={inputStyle}
+                                value={email}
+                            />
                         </FormField>
                         <FormField>
                             <label style={labelStyle}>Senha</label>
-                            <input placeholder='********' style={inputStyle} />
+                            <input
+                                type="password"
+                                onChange={(e) => setSenha(e.target.value)}
+                                placeholder='********'
+                                style={inputStyle}
+                                value={senha}
+                            />
                         </FormField>
                         <Button type='submit' style={buttonStyle}>Criar conta</Button>
                     </Form>
