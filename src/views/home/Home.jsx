@@ -90,13 +90,13 @@ export default function Home() {
         const cursoId = event.target.value;
         setCursoSelecionado(cursoId);
         setDisciplinasFiltradas([]);
-        setPeriodoSelecionado([]); // Limpa o período selecionado ao mudar o curso
+        setPeriodoSelecionado([]);
         try {
             if (cursoId) {
                 console.log("courseId>", cursoId)
                 const resDisciplinas = await axios.get(`http://localhost:8081/disciplinas?courseId=${cursoId}`);
                 if (resDisciplinas.data.length > 0) {
-                    setTodasDisciplinas(resDisciplinas.data); // Atualiza todasDisciplinas com as disciplinas do curso
+                    setTodasDisciplinas(resDisciplinas.data);
                     setDisciplinas(resDisciplinas.data);
                 } else {
                     setDisciplinas([]);
@@ -135,9 +135,9 @@ export default function Home() {
         setPeriodoSelecionado((prevPeriodos) => {
             let updatedPeriodos;
             if (prevPeriodos.includes(periodo)) {
-                updatedPeriodos = prevPeriodos.filter(p => p !== periodo); // Remove o período se já estiver selecionado
+                updatedPeriodos = prevPeriodos.filter(p => p !== periodo);
             } else {
-                updatedPeriodos = [...prevPeriodos, periodo]; // Adiciona o período se não estiver selecionado
+                updatedPeriodos = [...prevPeriodos, periodo];
             }
 
             // Filtra disciplinas de acordo com os períodos selecionados
