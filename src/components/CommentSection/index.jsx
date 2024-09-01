@@ -1,27 +1,17 @@
 import React from 'react';
-import { Comment, Header, Icon } from 'semantic-ui-react';
-import IconUser from '../iconUser'; // Certifique-se de que o caminho está correto
+import { Comment, Header } from 'semantic-ui-react';
+import IconUser from '../iconUser';
 
-const CommentSection = ({ comments }) => (
+const CommentSection = ({ comments, user }) => (
   <Comment.Group>
     <Header as='h3' dividing>
-      Respostas
+      Comentários
     </Header>
 
-    {comments.map((comment, index) => (
-      <Comment key={index}>
-        <Comment.Avatar as={() => <IconUser user={comment.user} type={comment.type} />} />
+    {comments.map((comment) => (
+      <Comment key={comment.id}>
         <Comment.Content>
-          <Comment.Author as='a'>{comment.user}</Comment.Author>
-          <Comment.Metadata>
-            <div>{comment.date}</div>
-          </Comment.Metadata>
-          <Comment.Text>{comment.text}</Comment.Text>
-          <Comment.Actions>
-            <Comment.Action>
-              <Icon name="heart" /> {comment.likes}
-            </Comment.Action>
-          </Comment.Actions>
+          <Comment.Text>{comment.descricao}<p>{user.nome}</p></Comment.Text>
         </Comment.Content>
       </Comment>
     ))}
@@ -29,3 +19,4 @@ const CommentSection = ({ comments }) => (
 );
 
 export default CommentSection;
+
