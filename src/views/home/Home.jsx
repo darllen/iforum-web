@@ -27,6 +27,7 @@ export default function Home() {
     const [disciplinasFiltradas, setDisciplinasFiltradas] = useState([]);
     const [cursoSelecionado, setCursoSelecionado] = useState(null);
     const [periodoSelecionado, setPeriodoSelecionado] = useState([]);
+    const [todasDisciplinas, setTodasDisciplinas] = useState([]); // Adicionei um estado para todas as disciplinas carregadas inicialmente
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -38,7 +39,7 @@ export default function Home() {
             try {
                 const resDisciplinas = await axios.get(`${ENDERECO_API}/disciplinas`);
                 setDisciplinas(resDisciplinas.data);
-
+                setTodasDisciplinas(resDisciplinas.data);
                 const resPerguntas = await axios.get(`${ENDERECO_API}/perguntas`);
                 setPerguntas(resPerguntas.data);
             } catch (error) {
@@ -95,9 +96,12 @@ export default function Home() {
                 console.log("courseId>", cursoId)
                 const resDisciplinas = await axios.get(`http://localhost:8081/disciplinas?courseId=${cursoId}`);
                 if (resDisciplinas.data.length > 0) {
+                    setTodasDisciplinas(resDisciplinas.data); // Atualiza todasDisciplinas com as disciplinas do curso
                     setDisciplinas(resDisciplinas.data);
                 } else {
                     setDisciplinas([]);
+                    setTodasDisciplinas(resDisciplinas.data);
+
                     console.warn("Nenhuma disciplina encontrada para o curso selecionado.");
                 }
 
@@ -111,6 +115,7 @@ export default function Home() {
             } else {
                 const resDisciplinas = await axios.get('http://localhost:8081/disciplinas');
                 setDisciplinas(resDisciplinas.data);
+                setTodasDisciplinas(resDisciplinas.data);
 
                 const resPerguntas = await axios.get('http://localhost:8081/perguntas');
                 setPerguntas(resPerguntas.data);
@@ -122,20 +127,30 @@ export default function Home() {
 
 
     const handlePeriodoClick = (periodo) => {
-        console.log("periodo>>", periodo)
+        console.log("periodo>>", periodo);
         if (!cursoSelecionado) {
             alert("Selecione um curso primeiro para poder filtrar por período.");
             return;
         }
         setPeriodoSelecionado((prevPeriodos) => {
+            let updatedPeriodos;
             if (prevPeriodos.includes(periodo)) {
-                return prevPeriodos.filter(p => p !== periodo); // Remove o período se já estiver selecionado
+                updatedPeriodos = prevPeriodos.filter(p => p !== periodo); // Remove o período se já estiver selecionado
             } else {
-                return [...prevPeriodos, periodo]; // Adiciona o período se não estiver selecionado
+                updatedPeriodos = [...prevPeriodos, periodo]; // Adiciona o período se não estiver selecionado
             }
+
+            // Filtra disciplinas de acordo com os períodos selecionados
+            if (updatedPeriodos.length > 0) {
+                const disciplinasFiltradasPorPeriodo = todasDisciplinas.filter(d => updatedPeriodos.includes(d.periodo));
+                setDisciplinas(disciplinasFiltradasPorPeriodo);
+            } else {
+                setDisciplinas(todasDisciplinas); // Se nenhum período for selecionado, exibe todas as disciplinas do curso atual
+            }
+
+            return updatedPeriodos;
         });
     };
-
     const handleCardClickSubject = (entity) => {
         const disciplinaId = entity.id;
         setDisciplinasFiltradas((prevState) => {
@@ -245,9 +260,11 @@ export default function Home() {
                                         }}>Disciplina
                                         </div>
                                         {disciplinas.map((d) => (
-                                            <Disciplina key={d.id} disciplina={d.nome}
-                                                        isSelected={disciplinasFiltradas.includes(d.id)}
-                                                        onClick={() => handleCardClickSubject(d)}/>
+                                            <Disciplina
+                                                key={d.id}
+                                                disciplina={d.nome}
+                                                isSelected={disciplinasFiltradas.includes(d.id)}
+                                                onClick={() => handleCardClickSubject(d)}/>
                                         ))}
 
                                     </div>
