@@ -24,10 +24,9 @@ export default function Home() {
     const [disciplinas, setDisciplinas] = useState([]);
     const [cursos, setCursos] = useState([]);
     const [perguntas, setPerguntas] = useState([]);
-
+    const [disciplinasFiltradas, setDisciplinasFiltradas] = useState([]);
     const [cursoSelecionado, setCursoSelecionado] = useState(null);
-    const [disciplinaSelecionada, setDisciplinaSelecionada] = useState(null);
-    const [periodoSelecionado, setPeriodoSelecionado] = useState(null);
+    const [periodoSelecionado, setPeriodoSelecionado] = useState([]);
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -60,11 +59,37 @@ export default function Home() {
         carregarCursos();
     }, []);
 
+    const handleDisciplinaChange = async () => {
+        try {
+            let query = `http://localhost:8081/perguntas`;
+            const params = new URLSearchParams();
+
+            if (disciplinasFiltradas.length > 0) {
+                const disciplinaIds = JSON.stringify(disciplinasFiltradas);
+                params.append('disciplinaIds', disciplinaIds);
+            }
+
+            if (periodoSelecionado && periodoSelecionado.length > 0) {
+                const periodos = JSON.stringify(periodoSelecionado);
+                params.append('periodos', periodos);
+            }
+
+            if (cursoSelecionado) {
+                params.append('courseId', cursoSelecionado);
+            }
+
+            query += `?${params.toString()}`;
+            const resPerguntas = await axios.get(query);
+            setPerguntas(resPerguntas.data);
+        } catch (error) {
+            console.error("Erro ao carregar perguntas:", error);
+        }
+    };
     const handleCursoChange = async (event) => {
         const cursoId = event.target.value;
         setCursoSelecionado(cursoId);
-        console.log(cursoId);
-
+        setDisciplinasFiltradas([]);
+        setPeriodoSelecionado([]); // Limpa o período selecionado ao mudar o curso
         try {
             if (cursoId) {
                 console.log("courseId>", cursoId)
@@ -72,7 +97,7 @@ export default function Home() {
                 if (resDisciplinas.data.length > 0) {
                     setDisciplinas(resDisciplinas.data);
                 } else {
-                    setDisciplinas([]); // Nenhuma disciplina encontrada para o curso
+                    setDisciplinas([]);
                     console.warn("Nenhuma disciplina encontrada para o curso selecionado.");
                 }
 
@@ -80,7 +105,7 @@ export default function Home() {
                 if (resPerguntas.data.length > 0) {
                     setPerguntas(resPerguntas.data);
                 } else {
-                    setPerguntas([]); // Nenhuma pergunta encontrada para o curso
+                    setPerguntas([]);
                     console.warn("Nenhuma pergunta encontrada para o curso selecionado.");
                 }
             } else {
@@ -94,20 +119,42 @@ export default function Home() {
             console.error("Erro ao carregar disciplinas ou perguntas:", error);
         }
     };
-    const handleCardClickCourse = (entity) => {
-        setCursoSelecionado(entity);
-        console.log(`Pesquisa por: ${entity.periodo}`);
+
+
+    const handlePeriodoClick = (periodo) => {
+        console.log("periodo>>", periodo)
+        if (!cursoSelecionado) {
+            alert("Selecione um curso primeiro para poder filtrar por período.");
+            return;
+        }
+        setPeriodoSelecionado((prevPeriodos) => {
+            if (prevPeriodos.includes(periodo)) {
+                return prevPeriodos.filter(p => p !== periodo); // Remove o período se já estiver selecionado
+            } else {
+                return [...prevPeriodos, periodo]; // Adiciona o período se não estiver selecionado
+            }
+        });
     };
 
     const handleCardClickSubject = (entity) => {
-        setDisciplinaSelecionada(entity);
-        console.log(`Pesquisa por: ${entity.periodo}`);
+        const disciplinaId = entity.id;
+        setDisciplinasFiltradas((prevState) => {
+            if (prevState.includes(disciplinaId)) {
+                return prevState.filter(id => id !== disciplinaId);
+            } else {
+                return [...prevState, disciplinaId];
+            }
+        });
     };
 
     function confirmaPerguntar() {
         setOpenModal(true)
     }
-    
+
+    useEffect(() => {
+        handleDisciplinaChange();
+    }, [disciplinasFiltradas, cursoSelecionado, periodoSelecionado]);
+
 
     return (
         <div style={{backgroundColor: 'var(--background-page)'}}>
@@ -165,10 +212,20 @@ export default function Home() {
                                             fontFamily: 'Poppins'
                                         }}>Qual o período?
                                         </div>
-                                        {periodos.map((c) => (
-                                            <Periodo key={c.id} periodo={c.periodo} isSelected={cursoSelecionado === c}
-                                                     onClick={() => handleCardClickCourse(c)}/>
-                                        ))}
+                                        {cursoSelecionado ? (
+                                            periodos.map((c) => (
+                                                <Periodo
+                                                    key={c.id}
+                                                    className={`periodo-button ${periodoSelecionado.includes(c.id) ? 'selected' : ''}`}
+
+                                                    periodo={c.periodo}
+                                                    isSelected={periodoSelecionado.includes(c.id)} // Verifica se o período está selecionado
+                                                    onClick={() => handlePeriodoClick(c.id)}
+                                                />
+                                            ))
+                                        ) : (
+                                            <p>Selecione um curso primeiro para poder filtrar pelo período.</p>
+                                        )}
                                     </div>
 
                                     <div className="light-shadow" style={{
@@ -189,7 +246,7 @@ export default function Home() {
                                         </div>
                                         {disciplinas.map((d) => (
                                             <Disciplina key={d.id} disciplina={d.nome}
-                                                        isSelected={disciplinaSelecionada === d}
+                                                        isSelected={disciplinasFiltradas.includes(d.id)}
                                                         onClick={() => handleCardClickSubject(d)}/>
                                         ))}
 
