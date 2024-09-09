@@ -1,4 +1,3 @@
-// src/services/respostaService.js
 const baseURL = "http://localhost:8081/respostas";
 
 export const fetchRespostas = async () => {
