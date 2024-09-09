@@ -8,6 +8,7 @@ import Periodo from "../component/periodo";
 import Select from "../component/select";
 import TextAreaHoverable from "../component/textAreaHoverable";
 import axios from "axios";
+import {disciplinasPorCurso} from "../../services/curso";
 
 
 const periodos = [
@@ -28,11 +29,28 @@ export default function Home() {
     const [cursoSelecionado, setCursoSelecionado] = useState(null);
     const [periodoSelecionado, setPeriodoSelecionado] = useState([]);
     const [todasDisciplinas, setTodasDisciplinas] = useState([]); // Adicionei um estado para todas as disciplinas carregadas inicialmente
+    const [cursoSelecionadoModal, setCursoSelecionadoModal] = useState(null);
+    const [disciplinasModal, setDisciplinasModal] = useState([]);
 
     const [openModal, setOpenModal] = useState(false);
 
     const [hover, setHover] = useState(false);
 
+    useEffect(() => {
+        if (cursoSelecionadoModal) {
+            // Carregar disciplinas no modal com base no curso selecionado no modal
+            carregarDisciplinasModal();
+        }
+    }, [cursoSelecionadoModal]);
+
+    const carregarDisciplinasModal = async () => {
+        try {
+            const resultCursoDisciplinas = await disciplinasPorCurso(cursoSelecionadoModal);
+            setDisciplinasModal(resultCursoDisciplinas);
+        } catch (error) {
+            console.error("Erro ao carregar disciplinas no modal:", error);
+        }
+    };
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -340,29 +358,16 @@ export default function Home() {
                         </div>
                     </Header>
                     <Modal.Content>
-                        <div style={{display: "flex", alignItems: "center", justifyContent: "center",}}>
+                        <div style={{display: "flex", alignItems: "center", justifyContent: "center", width: "fitz"}}>
                             <TextAreaHoverable rows={8} cols={87}
                                                placeholder="Como a combinatória é aplicada na otimização de processos no Linux?"/>
                         </div>
                         <Form style={{display: "flex", gap: "1%", justifyContent: 'center', padding: '2% 10% 2% 10%'}}>
-                            <Select tipo="Curso"
-                                    cursoSelecionado={cursoSelecionado}
-                                    setCursoSelecionado={setCursoSelecionado}
-                                    periodoSelecionado={periodoSelecionado}
-                                    setPeriodoSelecionado={setPeriodoSelecionado}
-                            />
-                            <Select tipo="Período"
-                                    cursoSelecionado={cursoSelecionado}
-                                    setCursoSelecionado={setCursoSelecionado}
-                                    periodoSelecionado={periodoSelecionado}
-                                    setPeriodoSelecionado={setPeriodoSelecionado}
-                            />
-                            <Select tipo="Disciplina"
-                                    cursoSelecionado={cursoSelecionado}
-                                    setCursoSelecionado={setCursoSelecionado}
-                                    periodoSelecionado={periodoSelecionado}
-                                    setPeriodoSelecionado={setPeriodoSelecionado}
-                            />
+
+                            <Select tipo="Curso" onDisciplinaChange={setCursoSelecionadoModal}/>
+                            <Select tipo="Disciplina" cursoSelecionado={cursoSelecionadoModal}
+                                    disciplinas={disciplinasModal}/>
+
                         </Form>
                     </Modal.Content>
 
