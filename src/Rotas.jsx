@@ -9,43 +9,49 @@ import Home from './views/home/Home';
 import Pergunta from './views/pergunta/Pergunta';
 import PrivateRoute from "./helpers/privateRoute";
 import PublicRoute from "./helpers/publicRoute";
+import Topic from './views/topics';
 
 function Rotas() {
-    return (
-        <>
-            <Routes>
-                <Route path="/" element={<Inicio />} />
-                <Route path="login" element={
-                    <PublicRoute>
-                        <Login />
-                    </PublicRoute>
-                } />
-                <Route path="cadastro" element={
-                    <PublicRoute>
-                        <Cadastro />
-                    </PublicRoute>
-                } />
-                <Route path="home" element={
-                    <PrivateRoute>
-                        <Home />
-                    </PrivateRoute>
-                } />
-                <Route path="pergunta" element={
-                    <PrivateRoute>
-                        <Pergunta />
-                    </PrivateRoute>
-                } />
-            </Routes>
-            <ToastContainer 
-                position="top-right"
-                autoClose={4000} 
-                hideProgressBar={true} 
-                closeOnClick 
-                pauseOnHover
-                theme="light"
-            />
-        </>
-    )
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Inicio />} />
+        <Route path="login" element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        } />
+        <Route path="cadastro" element={
+          <PublicRoute>
+            <Cadastro />
+          </PublicRoute>
+        } />
+        <Route path="home" element={
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        } />
+        <Route path="pergunta" element={
+          <PrivateRoute>
+            <Pergunta />
+          </PrivateRoute>
+        } />
+        <Route path="topicos/:id" element={
+          <PrivateRoute>
+            <Topic />
+          </PrivateRoute>
+        } />
+      </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={true}
+        closeOnClick
+        pauseOnHover
+        theme="light"
+      />
+    </>
+  )
 }
 
 export default Rotas;

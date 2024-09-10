@@ -8,8 +8,9 @@ import Periodo from "../component/periodo";
 import Select from "../component/select";
 import TextAreaHoverable from "../component/textAreaHoverable";
 import axios from "axios";
-import {disciplinasPorCurso} from "../../services/curso";
-
+import {disciplinasPorCurso} from "../../services/curso/index"
+import {criarPergunta} from "../../services/perguntas";
+import {getUser} from "../../helpers/authStore";
 
 const periodos = [
     {id: 1, periodo: '1º P'},
@@ -23,6 +24,7 @@ const periodos = [
 export default function Home() {
     const ENDERECO_API = "http://localhost:8081";
     const [disciplinas, setDisciplinas] = useState([]);
+    const [tituloPergunta, setTituloPergunta] = useState(""); // Estado para o título da pergunta
     const [cursos, setCursos] = useState([]);
     const [perguntas, setPerguntas] = useState([]);
     const [disciplinasFiltradas, setDisciplinasFiltradas] = useState([]);
@@ -31,11 +33,15 @@ export default function Home() {
     const [todasDisciplinas, setTodasDisciplinas] = useState([]); // Adicionei um estado para todas as disciplinas carregadas inicialmente
     const [cursoSelecionadoModal, setCursoSelecionadoModal] = useState(null);
     const [disciplinasModal, setDisciplinasModal] = useState([]);
+    const [novaPergunta, setNovaPergunta] = useState(""); // Estado para armazenar o texto da nova pergunta
+    const [disciplinaSelecionada, setDisciplinaSelecionada] = useState(null); // Estado para disciplina selecionada no modal
+
 
     const [openModal, setOpenModal] = useState(false);
 
     const [hover, setHover] = useState(false);
 
+    const user = getUser();
     useEffect(() => {
         if (cursoSelecionadoModal) {
             // Carregar disciplinas no modal com base no curso selecionado no modal
@@ -140,6 +146,48 @@ export default function Home() {
             }
         } catch (error) {
             console.error("Erro ao carregar disciplinas ou perguntas:", error);
+        }
+    };
+
+    const handleSubmitPergunta = async () => {
+        console.log(novaPergunta)
+        console.log(cursoSelecionadoModal)
+        console.log(disciplinaSelecionada)
+
+        if (!tituloPergunta || !novaPergunta || !cursoSelecionadoModal || !disciplinaSelecionada) {
+            alert("Preencha todos os campos antes de enviar a pergunta.");
+            return;
+        }
+
+        // const perguntaData = {
+        //     titulo: novaPergunta,
+        //     cursoId: cursoSelecionadoModal,
+        //     disciplinaId: disciplinaSelecionada
+        // };
+
+        console.log(user)
+        const perguntaData = {
+            "titulo": tituloPergunta,
+            "descricao": novaPergunta,
+            "usuario_id": user.id,
+            "disciplina_id": disciplinaSelecionada
+        }
+
+        const response = await criarPergunta(perguntaData);
+        if (response) {
+            alert("Pergunta criada com sucesso!");
+
+            // Atualize o estado de perguntas para incluir a nova pergunta
+            setPerguntas((prevPerguntas) => [response, ...prevPerguntas]);
+
+            // Feche o modal e limpe os campos
+            setOpenModal(false);
+            setNovaPergunta(""); // Limpa o campo de corpo da pergunta
+            setTituloPergunta(""); // Limpa o campo de título da pergunta
+            setCursoSelecionadoModal(null); // Limpa a seleção de curso
+            setDisciplinaSelecionada(null); // Limpa a seleção de disciplina
+        } else {
+            alert("Erro ao criar pergunta.");
         }
     };
 
@@ -333,15 +381,19 @@ export default function Home() {
                     </Grid>
                 </Container>
             </div>
-            <Modal basic onClose={() => setOpenModal(false)} onOpen={() => setOpenModal(true)} open={openModal} style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-                height: "60%",
-                width: "50%",
-                borderRadius: 15
-            }}>
+            <Modal basic onClose={() => setOpenModal(false)}
+                   onOpen={() => setOpenModal(true)}
+                   open={openModal}
+
+                   style={{
+                       display: "flex",
+                       justifyContent: "center",
+                       alignItems: "center",
+                       backgroundColor: "white",
+                       height: "60%",
+                       width: "50%",
+                       borderRadius: 15
+                   }}>
                 <div style={{}}>
                     <Header style={{
                         display: "flex",
@@ -358,20 +410,51 @@ export default function Home() {
                         </div>
                     </Header>
                     <Modal.Content>
+                        <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "100%",
+                            marginBottom: "20px"
+                        }}>
+                            <input
+                                type="text"
+                                placeholder="Digite o título da pergunta"
+                                value={tituloPergunta}
+                                onChange={(e) => setTituloPergunta(e.target.value)}
+                                style={{
+                                    width: "100%",
+                                    padding: "10px",
+                                    fontSize: "16px",
+                                    borderRadius: "5px",
+                                    border: "1px solid #ccc"
+                                }}
+                            />
+                        </div>
                         <div style={{display: "flex", alignItems: "center", justifyContent: "center", width: "fitz"}}>
-                            <TextAreaHoverable rows={8} cols={87}
-                                               placeholder="Como a combinatória é aplicada na otimização de processos no Linux?"/>
+                            <TextAreaHoverable
+                                rows={8}
+                                value={novaPergunta}
+                                onChange={(e) => setNovaPergunta(e.target.value)}
+                                cols={87}
+                                placeholder="Como a combinatória é aplicada na otimização de processos no Linux?"/>
                         </div>
                         <Form style={{display: "flex", gap: "1%", justifyContent: 'center', padding: '2% 10% 2% 10%'}}>
 
                             <Select tipo="Curso" onDisciplinaChange={setCursoSelecionadoModal}/>
-                            <Select tipo="Disciplina" cursoSelecionado={cursoSelecionadoModal}
-                                    disciplinas={disciplinasModal}/>
+                            <Select
+                                tipo="Disciplina"
+                                cursoSelecionado={cursoSelecionadoModal}
+                                disciplinas={disciplinasModal}
+                                onDisciplinaChange={setDisciplinaSelecionada} // Passe setDisciplinaSelecionada como onDisciplinaChange
+                            />
 
                         </Form>
                     </Modal.Content>
 
-                    <Modal.Actions style={{display: "flex", padding: "4% 10% 0% 0%", justifyContent: "right"}}>
+                    <Modal.Actions style={{display: "flex", padding: "4% 10% 0% 0%", justifyContent: "right"}}
+                                   onClick={handleSubmitPergunta}
+                    >
                         <Button type="button" style={{backgroundColor: "var(--azul-normal)"}}>
                             <Link to={"/home"}
                                   style={{color: "var(--azul-branquelo)", fontWeight: 500, fontFamily: "Poppins",}}>

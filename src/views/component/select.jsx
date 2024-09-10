@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {disciplinasPorCurso} from "../../services/curso";
+import {disciplinasPorCurso} from "../../services/curso/index"
 
 const Select = ({tipo, cursoSelecionado, onDisciplinaChange}) => {
     const ENDERECO_API = "http://localhost:8081";
@@ -72,7 +72,11 @@ const Select = ({tipo, cursoSelecionado, onDisciplinaChange}) => {
                 <div className="pesquisa-curso"
                      style={{backgroundColor: 'white', borderRadius: 10, alignItems: 'center'}}>
                     <div style={{display: 'flex'}}>
-                        <select className='pesquisa-curso' style={{cursor: 'pointer'}}>
+                        <select
+                            className='pesquisa-curso'
+                            style={{cursor: 'pointer'}}
+                            onChange={(e) => onDisciplinaChange(e.target.value)}  // Use a prop onDisciplinaChange aqui
+                        >
                             <option value="">Disciplina</option>
                             {disciplinas.map((disciplina) => (
                                 <option key={disciplina.id} value={disciplina.id}
