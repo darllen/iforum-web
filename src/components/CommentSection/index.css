@@ -1,0 +1,6 @@
+.card-container {
+  width: 100%;
+  margin: 0 auto;
+  background-color: var(--bg-main);
+  border-radius: 20px;
+}

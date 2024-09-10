@@ -1,4 +1,105 @@
-.page{
-    background-color: rgba(247, 247, 247, 1);
-    min-height: 100vh;
+.page {
+  background-color: rgba(247, 247, 247, 1);
+  min-height: 100vh;
+}
+
+main {
+  width: 60%;
+}
+
+.comment-section {
+  padding-left: 20px;
+  margin-top: 10px;
+  border-left: 2px solid #ddd;
+}
+
+.comment {
+  margin-bottom: 10px;
+  padding: 5px 0;
+}
+
+.comment-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment-user {
+  color: #333;
+}
+
+.comment-date {
+  font-size: 0.8em;
+  color: #777;
+}
+
+.comment-body {
+  padding-left: 10px;
+}
+
+.resposta-section {
+  margin-top: 20px;
+}
+
+.resposta {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: white;
+  position: relative;
+}
+
+.resposta-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  justify-content: space-between;
+}
+
+.resposta-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.resposta-user {
+  font-weight: bold;
+  color: #333;
+}
+
+.resposta-date,
+.resposta-stats {
+  font-size: 0.8em;
+  color: #777;
+  margin-top: 2px;
+}
+
+.like-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #888;
+  font-size: 1.2em;
+}
+
+.add-comment {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.add-comment input {
+  flex: 1;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.add-comment button {
+  padding: 5px 10px;
+  background-color: #5271FF;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
