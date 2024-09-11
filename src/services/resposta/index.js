@@ -28,7 +28,7 @@ export const fetchRespostaPorId = async (id) => {
 
 export const fetchRespostasPorPerguntaId = async (perguntaId) => {
   try {
-    const response = await fetch(`${baseURL}/pergunta/${perguntaId}`);
+    const response = await fetch(`${baseURL}/${perguntaId}/respostas`);
     if (!response.ok) {
       throw new Error("Erro ao buscar respostas por pergunta ID");
     }
