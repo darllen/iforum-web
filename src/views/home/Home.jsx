@@ -419,6 +419,7 @@ export default function Home() {
                         }}>
                             <input
                                 type="text"
+
                                 placeholder="Digite o título da pergunta"
                                 value={tituloPergunta}
                                 onChange={(e) => setTituloPergunta(e.target.value)}
@@ -426,18 +427,20 @@ export default function Home() {
                                     width: "100%",
                                     padding: "10px",
                                     fontSize: "16px",
-                                    borderRadius: "5px",
+                                    borderRadius: "0px",
                                     border: "1px solid #ccc"
                                 }}
                             />
                         </div>
-                        <div style={{display: "flex", alignItems: "center", justifyContent: "center", width: "fitz"}}>
+                        <div style={{width: "100%"}}>
                             <TextAreaHoverable
+                                style={{width: "100%", borderRadius: "0px", borderColor: "#ccc"}}
                                 rows={8}
                                 value={novaPergunta}
                                 onChange={(e) => setNovaPergunta(e.target.value)}
-                                cols={87}
-                                placeholder="Como a combinatória é aplicada na otimização de processos no Linux?"/>
+                                placeholder="Como a combinatória é aplicada na otimização de processos no Linux?"
+
+                            />
                         </div>
                         <Form style={{display: "flex", gap: "1%", justifyContent: 'center', padding: '2% 10% 2% 10%'}}>
 
@@ -452,12 +455,17 @@ export default function Home() {
                         </Form>
                     </Modal.Content>
 
-                    <Modal.Actions style={{display: "flex", padding: "4% 10% 0% 0%", justifyContent: "right"}}
+                    <Modal.Actions style={{display: "flex", padding: "4% 10% 0% 0%", justifyContent: "center"}}
                                    onClick={handleSubmitPergunta}
                     >
                         <Button type="button" style={{backgroundColor: "var(--azul-normal)"}}>
                             <Link to={"/home"}
-                                  style={{color: "var(--azul-branquelo)", fontWeight: 500, fontFamily: "Poppins",}}>
+                                  style={{
+                                      color: "var(--azul-branquelo)",
+                                      marginInline: "auto",
+                                      fontWeight: 500,
+                                      fontFamily: "Poppins",
+                                  }}>
                                 Perguntar
                             </Link>
                         </Button>
