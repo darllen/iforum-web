@@ -4,7 +4,7 @@ import {Button, Form, Icon, Image, Menu} from "semantic-ui-react";
 import logo from '../../assets/img/logo1.jpg';
 import Avatar from "./avatar";
 import {getUser, setUser} from "../../helpers/authStore";
-import {atualizarUsuario, fetchUserInfo} from "../../services/usuario";
+import {atualizarUsuario, fetchTopUsuarios, fetchUserInfo} from "../../services/usuario";
 
 
 class MenuSistema extends React.Component {
@@ -22,7 +22,12 @@ class MenuSistema extends React.Component {
         nome: '',
         email: '',
         senha: '',
-        confirmSenha: ''
+        confirmSenha: '',
+        searchQuery: '',
+        filteredTopics: [],
+        allTopics: [],
+        bestUsers: [],
+        loadingBestUsers: true
     }
     saveUserChanges = async () => {
         const user = getUser(); // Obtém o usuário atual do localStorage
@@ -69,15 +74,22 @@ class MenuSistema extends React.Component {
         const user = getUser();
         if (user && user.id) {
             const userInfo = await fetchUserInfo(user.id);
-            console.log("user info>", userInfo)
             if (userInfo) {
                 this.setState({
                     totalRespostas: userInfo.totalRespostas,
                     totalPerguntas: userInfo.totalComentarios,
                     totalCurtidas: userInfo.totalCurtidasRespostas,
-                    userInfoFetched: true // Define que as informações já foram buscadas
+                    userInfoFetched: true
                 });
             }
+        }
+        try {
+            const bestUsers = await fetchTopUsuarios();
+            console.log("bestUsers>>>", bestUsers)
+            this.setState({bestUsers, loadingBestUsers: false});
+        } catch (error) {
+            console.error("Erro ao carregar melhores usuários:", error);
+            this.setState({loadingBestUsers: false});
         }
     }
 
@@ -85,6 +97,18 @@ class MenuSistema extends React.Component {
         this.setState((prevState) => ({
             dropdownUserVisible: !prevState.dropdownUserVisible
         }));
+    }
+
+    handleSearch = (e) => {
+        const query = e.target.value;
+        console.log(query)
+        this.setState({searchQuery: query});
+
+        const filteredTopics = this.state.allTopics.filter(topic =>
+            topic.title.toLowerCase().includes(query.toLowerCase())
+        );
+
+        this.setState({filteredTopics});
     }
 
     toggleDropdownRanking = () => {
@@ -126,20 +150,13 @@ class MenuSistema extends React.Component {
         }
 
 
-        const bestUsers = [
-            {id: 1, username: 'Nilson Júnior', curtidas: 364},
-            {id: 2, username: 'Nilson Júnior', curtidas: 364},
-            {id: 3, username: 'Nilson Júnior', curtidas: 364},
-            {id: 4, username: 'Nilson Júnior', curtidas: 364},
-            {id: 5, username: 'Nilson Júnior', curtidas: 364}
-        ];
-
         const {
             dropdownUserVisible,
             dropdownRankingVisible,
             isProfileHovered,
             isExitHovered,
-            isModalVisible
+            isModalVisible,
+            bestUsers,
 
         } = this.state;
 
@@ -154,6 +171,11 @@ class MenuSistema extends React.Component {
                         <input
                             icon='search'
                             placeholder='Qual a sua pergunta?'
+                            value={this.state.searchQuery} // Vincula o valor ao estado de searchQuery
+                            onChange={(e) => {
+                                this.setState({searchQuery: e.target.value});
+                                this.props.onSearch(e.target.value); // Chama o callback de onSearch passando o valor atual
+                            }}
                             style={{
                                 width: '100%',
                                 border: 0,
@@ -255,7 +277,7 @@ class MenuSistema extends React.Component {
                                 margin: 0,
                                 boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
                                 zIndex: 1001,
-                                width: '20vw',
+                                width: '22vw',
                                 height: '36vh'
                             }}>
                                 <div style={{
@@ -280,6 +302,7 @@ class MenuSistema extends React.Component {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'space-between',
+                                    gap: '5px',
                                     padding: '5% 5%',
                                     borderBottom: '1.5px solid #E6E6E6'
                                 }}>
@@ -402,7 +425,7 @@ class MenuSistema extends React.Component {
                                             color: 'var(--cinza-escuro)',
                                             fontSize: '1.3em'
                                         }}>
-                                            {bu.username}
+                                            {bu.nome}
                                         </div>
                                     </div>
                                 ))}

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Button, Container, Form, Grid, Header, Icon, Modal} from 'semantic-ui-react';
 import {Link} from "react-router-dom";
 import MenuSistema from "../component/menuSistema";
@@ -36,9 +36,8 @@ export default function Home() {
     const [novaPergunta, setNovaPergunta] = useState(""); // Estado para armazenar o texto da nova pergunta
     const [disciplinaSelecionada, setDisciplinaSelecionada] = useState(null); // Estado para disciplina selecionada no modal
 
-
     const [openModal, setOpenModal] = useState(false);
-
+    const [searchTerm, setSearchTerm] = useState("");
     const [hover, setHover] = useState(false);
 
     const user = getUser();
@@ -48,6 +47,10 @@ export default function Home() {
             carregarDisciplinasModal();
         }
     }, [cursoSelecionadoModal]);
+
+    const handleSearch = (query) => {
+        setSearchTerm(query); // Atualiza o termo de busca
+    };
 
     const carregarDisciplinasModal = async () => {
         try {
@@ -109,7 +112,7 @@ export default function Home() {
         } catch (error) {
             console.error("Erro ao carregar perguntas:", error);
         }
-    },[disciplinasFiltradas, cursoSelecionado, periodoSelecionado]);
+    }, [disciplinasFiltradas, cursoSelecionado, periodoSelecionado]);
     const handleCursoChange = async (event) => {
         const cursoId = event.target.value;
         setCursoSelecionado(cursoId);
@@ -235,12 +238,11 @@ export default function Home() {
     useEffect(() => {
         handleDisciplinaChange();
     }, [disciplinasFiltradas, cursoSelecionado, periodoSelecionado, handleDisciplinaChange]);
-    
 
 
     return (
-        <div style={{backgroundColor: 'var(--background-page)'}}>
-            <MenuSistema/>
+        <div style={{backgroundColor: 'var(--background-page)', minHeight: "100vh"}}>
+            <MenuSistema onSearch={handleSearch}/>
 
             <div style={{marginTop: '5%'}}>
                 <Container>
@@ -371,10 +373,23 @@ export default function Home() {
                                     </div>
                                     {/*LISTAGEM DE PERGUNTAS*/}
                                     <div style={{marginTop: 40}}>
-                                        {perguntas.map((p) => (
-                                            <Pergunta key={p.id} usuario={p.Usuario.nome} disciplina={p.Disciplina.nome}
-                                                      curtidas={p.curtidas} data={p.data} titulo={p.titulo}/>
-                                        ))}
+                                        {perguntas
+                                            .filter((p) =>
+                                                p.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                                p.descricao.toLowerCase().includes(searchTerm.toLowerCase())
+                                            )
+                                            .map((p) => (
+                                                <Pergunta
+                                                    key={p.id}
+                                                    usuario={p.Usuario.nome}
+                                                    disciplina={p.Disciplina.nome}
+                                                    curtidas={p.curtidas}
+                                                    data={p.data}
+                                                    titulo={p.titulo}
+                                                    id={p.id}
+                                                />
+                                            ))
+                                        }
                                     </div>
                                 </div>
                             </Grid.Column>
