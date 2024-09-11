@@ -28,7 +28,7 @@ export const fetchRespostaPorId = async (id) => {
 
 export const fetchRespostasPorPerguntaId = async (perguntaId) => {
   try {
-    const response = await fetch(`${baseURL}/pergunta/${perguntaId}`);
+    const response = await fetch(`${baseURL}/${perguntaId}/respostas`);
     if (!response.ok) {
       throw new Error("Erro ao buscar respostas por pergunta ID");
     }
@@ -89,4 +89,35 @@ export const deletarResposta = async (id) => {
     return null;
   }
 };
+
+export const adicionarLike = async (id) => {
+  try {
+    const response = await fetch(`${baseURL}/${id}/like`, {
+      method: 'POST',
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao adicionar like");
+    }
+    const data = await response.json();
+    console.log("Curtidas atualizadas:", data.curtidas);
+  } catch (error) {
+    console.error("Erro ao adicionar like:", error);
+  }
+};
+
+export const removerLike = async (id) => {
+  try {
+    const response = await fetch(`${baseURL}/${id}/dislike`, {
+      method: 'POST',
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao remover like");
+    }
+    const data = await response.json();
+    console.log("Curtidas atualizadas:", data.curtidas);
+  } catch (error) {
+    console.error("Erro ao remover like:", error);
+  }
+};
+
 

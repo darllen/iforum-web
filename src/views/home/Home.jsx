@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useCallback} from "react";
 import {Button, Container, Form, Grid, Header, Icon, Modal} from 'semantic-ui-react';
 import {Link} from "react-router-dom";
 import MenuSistema from "../component/menuSistema";
@@ -84,7 +84,7 @@ export default function Home() {
         carregarCursos();
     }, []);
 
-    const handleDisciplinaChange = async () => {
+    const handleDisciplinaChange = useCallback(async () => {
         try {
             let query = `http://localhost:8081/perguntas`;
             const params = new URLSearchParams();
@@ -109,7 +109,7 @@ export default function Home() {
         } catch (error) {
             console.error("Erro ao carregar perguntas:", error);
         }
-    };
+    },[disciplinasFiltradas, cursoSelecionado, periodoSelecionado]);
     const handleCursoChange = async (event) => {
         const cursoId = event.target.value;
         setCursoSelecionado(cursoId);
@@ -234,7 +234,8 @@ export default function Home() {
 
     useEffect(() => {
         handleDisciplinaChange();
-    }, [disciplinasFiltradas, cursoSelecionado, periodoSelecionado]);
+    }, [disciplinasFiltradas, cursoSelecionado, periodoSelecionado, handleDisciplinaChange]);
+    
 
 
     return (

@@ -1,4 +1,3 @@
-// src/services/comentarioService.js
 const baseURL = "http://localhost:8081/comentarios";
 
 export const fetchComentarios = async () => {
@@ -29,7 +28,7 @@ export const fetchComentarioPorId = async (id) => {
 
 export const fetchComentariosPorRespostaId = async (respostaId) => {
   try {
-    const response = await fetch(`${baseURL}/respostas/${respostaId}`);
+    const response = await fetch(`respostas/${respostaId}/comentarios`);
     if (!response.ok) {
       throw new Error("Erro ao buscar comentários por resposta ID");
     }

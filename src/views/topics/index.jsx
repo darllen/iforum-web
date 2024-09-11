@@ -20,22 +20,26 @@ export default function Topic() {
   const [loading, setLoading] = useState(true);
   const [newResposta, setNewResposta] = useState("");
   const [usuarios, setUsuarios] = useState({});
-  const user = getUser();
+  const user = getUser(); // Pega o usuário uma vez e fora do useEffect
 
   useEffect(() => {
+    // Evitar múltiplas requisições desnecessárias
     if (!user) {
       navigate('/login');
-      return;
+      return; // Apenas redireciona uma vez se o user for nulo
     }
 
     const fetchData = async () => {
       try {
+        // Busca a pergunta pelo ID
         const fetchedPergunta = await fetchPerguntaPorId(id);
         setPergunta(fetchedPergunta);
 
+        // Busca as respostas associadas à pergunta
         const fetchedRespostas = await fetchRespostasPorPerguntaId(id);
         setRespostas(fetchedRespostas);
 
+        // Prepara um mapa para armazenar os nomes dos usuários
         const uniqueUserIds = [...new Set(fetchedRespostas.map(resposta => resposta.id_usuario))];
         const userMap = {};
         for (const userId of uniqueUserIds) {
@@ -44,21 +48,23 @@ export default function Topic() {
         }
         setUsuarios(userMap);
 
+        // Busca os comentários para cada resposta e os armazena no estado
         const fetchedComentarios = {};
         for (const resposta of fetchedRespostas) {
-          const comentariosResposta = await fetchComentariosPorRespostaId(resposta.id);
+          const comentariosResposta = await fetchComentariosPorRespostaId(id);
           fetchedComentarios[resposta.id] = comentariosResposta;
         }
         setComentarios(fetchedComentarios);
+        console.log(fetchedComentarios)
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
       } finally {
-        setLoading(false);
+        setLoading(false); // Finaliza o carregamento
       }
     };
 
     fetchData();
-  }, [id]);
+  }, [id]); // Apenas `id` deve ser a dependência aqui
 
   const handleCreateResposta = async () => {
     if (newResposta.trim() === "") return;
@@ -119,7 +125,7 @@ export default function Topic() {
             )}
           </div>
 
-          {/* Usar o novo componente RespostaList */}
+          {/* Passa os comentários para o componente RespostaList */}
           <RespostaList
             respostas={respostas}
             comentarios={comentarios}
@@ -132,3 +138,4 @@ export default function Topic() {
     </div>
   );
 }
+
